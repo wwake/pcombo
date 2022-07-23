@@ -15,7 +15,7 @@ where P1.Target == P2.Target, P1.Input == P2.Input {
   let parser1 : P1
   let parser2 : P2
 
-  init(_ parser1: P1, _ parser2: P2) {
+  public init(_ parser1: P1, _ parser2: P2) {
     self.parser1 = parser1
     self.parser2 = parser2
   }
