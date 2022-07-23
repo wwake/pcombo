@@ -49,5 +49,3 @@ public enum ParseResult<Input, Target> {
 
 ### Transformation
 `|>` - **Pipe** - multiplication precedence - `parser |> function` runs the parser. If it succeeds, it transforms the result via the function; if it fails, it returns failure. 
-
-
