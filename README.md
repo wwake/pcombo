@@ -29,18 +29,23 @@ public enum ParseResult<Input, Target> {
 `satisfy("message") {closure over $0 }` - you may optionally specify an error message. Default is "Did not find expected value"
 
 ##Combinators
+
+### Alternatives
 `<|>` - **Alternative** - addition precedence - `p1 <|> p2` succeeds if either parser succeeds. On failure, returns the failure that got the farthest.
 
 `<%>` - **Name** - addition precedence - `p1 <%> "message"` - uses the result of p1 if it succeeds or makes any progress, or a failure with the specified message if it makes no progress.
 
+### Sequences
 `<&>` - **Sequence** - multiplication precedence - `p1 <&> p2`
 
 * For all variations, on failure it reports the point where it failed to find an acceptable value.
 * If p1 and p2 have the same target type, returns an array of results. 
 * If p1 and p2 have different target types, returns a tuple of the two results.
 
+### Repetition
 `<*>` - **Many (0 or more)** - prefix operator - `<*>p` returns an array of 0 or more values. (It can't return failure.)
 
 `<+>` - **Many1 (1 or more)** - prefix operator - `<+>p` returns an array of 1 or values if the parse succeeds at least once, else returns failure 
 
+### Transformation
 `|>` - **Pipe** - multiplication precedence - `parser |> function` runs the parser. If it succeeds, it transforms the result via the function; if it fails, it returns failure. 
