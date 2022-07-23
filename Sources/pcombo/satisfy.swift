@@ -7,20 +7,20 @@
 
 import Foundation
 
-class satisfy<InputType>: Parser  {
-  typealias Input = InputType
+public class satisfy<InputType>: Parser  {
+  public typealias Input = InputType
 
-  typealias Target = InputType
+  public typealias Target = InputType
 
   let message: String
   let condition : (Input) -> Bool
 
-  init(_ message: String = "Did not find expected value", _ condition: @escaping (Input) -> Bool) {
+  public init(_ message: String = "Did not find expected value", _ condition: @escaping (Input) -> Bool) {
     self.message = message
     self.condition = condition
   }
 
-  func parse(_ input: ArraySlice<Input>) -> ParseResult<Input, Target> {
+  public func parse(_ input: ArraySlice<Input>) -> ParseResult<Input, Target> {
     if input.isEmpty {
       return .failure(input.startIndex, message)
     }
