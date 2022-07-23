@@ -23,12 +23,12 @@ public enum ParseResult<Input, Target> {
 }
 ```
 
-##Basic Parsers
+## Basic Parsers
 `satisfy { closure over $0 }` - the closure is evaluated as a boolean and tells whether the first element of input succeeds
 
 `satisfy("message") {closure over $0 }` - you may optionally specify an error message. Default is "Did not find expected value"
 
-##Combinators
+## Combinators
 
 ### Alternatives
 `<|>` - **Alternative** - addition precedence - `p1 <|> p2` succeeds if either parser succeeds. On failure, returns the failure that got the farthest.
