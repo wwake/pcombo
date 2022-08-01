@@ -103,4 +103,26 @@ final class AndThenTests: XCTestCase {
     checkSuccess(result, [1, 2, 3], [4])
   }
 
-}
+  func testAndThenArrayElementFailsIfFirstItemFailsToMatch() throws {
+    let sat1 = satisfy<Int> { $0 == 1 }
+    let sat2 = satisfy<Int> { $0 == 2 }
+    let sat3 = satisfy<Int> { $0 == 3 }
+
+    let parser = (sat1 <&> sat2) <&> sat3
+
+    let result = parser.parse([1,42,3])
+
+    checkFailure(result, .failure(1, "Did not find expected value"))
+  }
+
+  func testAndThenArrayElementFailsIfOnlyFirstItemMatches() throws {
+    let sat1 = satisfy<Int> { $0 == 1 }
+    let sat2 = satisfy<Int> { $0 == 2 }
+    let sat3 = satisfy<Int> { $0 == 3 }
+
+    let parser = (sat1 <&> sat2) <&> sat3
+
+    let result = parser.parse([1,2,5])
+
+    checkFailure(result, .failure(2, "Did not find expected value"))
+  }}
