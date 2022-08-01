@@ -90,4 +90,17 @@ final class AndThenTests: XCTestCase {
 
     XCTFail("Expected failure but got \(actual)")
   }
+
+  func testAndThenArrayElementYieldsArray() throws {
+    let sat1 = satisfy<Int> { $0 == 1 }
+    let sat2 = satisfy<Int> { $0 == 2 }
+    let sat3 = satisfy<Int> { $0 == 3 }
+
+    let parser = sat1 <&> sat2 <&> sat3
+
+    let result = parser.parse([1,2,3,4])
+
+    checkSuccess(result, [1, 2, 3], [4])
+  }
+
 }
