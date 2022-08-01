@@ -162,4 +162,50 @@ final class AndThenTests: XCTestCase {
 
     checkFailure(result, .failure(2, "Did not find expected value"))
   }
+
+  func testAndThenArrayArrayYieldsArrayOfArrays() throws {
+    let sat1 = satisfy<Int> { $0 == 1 }
+    let sat2 = satisfy<Int> { $0 == 2 }
+    let sat3 = satisfy<Int> { $0 == 3 }
+    let sat4 = satisfy<Int> { $0 == 4 }
+
+    let parser = (sat1 <&> sat2) <&> (sat3 <&> sat4)
+
+    let result = parser.parse([1,2,3,4,5])
+
+    checkSuccess(result, [[1, 2], [3, 4]], [5])
+  }
+
+  func testAndThenKeepLeftYieldsLeft() throws {
+    let sat1 = satisfy<Int> { $0 == 1 }
+    let sat2 = satisfy<Int> { $0 == 2 }
+
+    let parser = sat1 <& sat2
+
+    let result = parser.parse([1,2,3])
+
+    checkSuccess(result, 1, [3])
+  }
+
+  func testAndThenKeepLeftFailsIfFirstItemFailsToMatch() throws {
+    let sat1 = satisfy<Int> { $0 == 1 }
+    let sat2 = satisfy<Int> { $0 == 2 }
+
+    let parser = sat1 <& sat2
+
+    let result = parser.parse([11,2,3])
+
+    checkFailure(result, .failure(0, "Did not find expected value"))
+  }
+
+  func testAndThenKeepLeftFailsIfSecondItemFailsToMatch() throws {
+    let sat1 = satisfy<Int> { $0 == 1 }
+    let sat2 = satisfy<Int> { $0 == 2 }
+
+    let parser = sat1 <& sat2
+
+    let result = parser.parse([1,22,3])
+
+    checkFailure(result, .failure(1, "Did not find expected value"))
+  }
 }
