@@ -26,13 +26,13 @@ final class CheckTests: XCTestCase {
     let one = satisfy { $0 == 1 }
     let parser = <+>one <&| sumShouldBeEven
     let result = parser.parse([1,1,1,2])
-    checkFailure(result, .failure(3, "sum was odd"))
+    result.checkFailure(.failure(3, "sum was odd"))
   }
 
   func testReturnsFailureWhenParseFails() {
     let one = satisfy { $0 == 1 }
     let parser = <+>one <&| sumShouldBeEven
     let result = parser.parse([2])
-    checkFailure(result, .failure(0, "Did not find expected value"))
+    result.checkFailure(.failure(0, "Did not find expected value"))
   }
 }

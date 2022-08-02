@@ -30,7 +30,7 @@ final class OrElseTests: XCTestCase {
 
     let result = parser.parse([3,4,5])
 
-    checkFailure(result, .failure(0, "Did not find expected value"))
+    result.checkFailure(.failure(0, "Did not find expected value"))
   }
 
   func testOrElseOperator() throws {

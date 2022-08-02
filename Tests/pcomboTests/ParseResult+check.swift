@@ -23,30 +23,16 @@ extension ParseResult {
     XCTAssertEqual(remaining, expectedRemaining, "remaining")
   }
 
-}
+  func checkFailure(_ expected: ParseResult<Int, Target>) where Target: Equatable {
 
-func checkSuccess<T: Equatable>(
-  _ actual: ParseResult<Int, T>,
-  _ expectedTarget: T,
-  _ expectedRemaining: ArraySlice<Int>)
-{
-  guard case let .success(target, remaining) = actual else {
-    XCTFail("Result was \(actual)")
-    return
-  }
-  XCTAssertEqual(target, expectedTarget, "target")
-  XCTAssertEqual(remaining, expectedRemaining, "remaining")
-}
-
-func checkFailure<T: Equatable>(_ actual: ParseResult<Int, T>, _ expected: ParseResult<Int, T>) {
-  if case let .failure(location1, message1) = actual {
-    if case let .failure(location2, message2) = expected {
-      XCTAssertEqual(location1, location2)
-      XCTAssertEqual(message1, message2)
-      return
+    if case let .failure(location1, message1) = self {
+      if case let .failure(location2, message2) = expected {
+        XCTAssertEqual(location1, location2, "location")
+        XCTAssertEqual(message1, message2, "message")
+        return
+      }
     }
+
+    XCTFail("Expected \(expected) but got \(self)")
   }
-
-  XCTFail("Expected \(expected) but got \(actual)")
 }
-

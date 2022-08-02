@@ -26,7 +26,7 @@ final class PipeTests: XCTestCase {
 
     let result = pipe.parse([1, 0, 3])
 
-    checkFailure(result, .failure(0, "the message"))
+    result.checkFailure(.failure(0, "the message"))
   }
 
   func testPipeOperatorConvertIntToCharacter() {

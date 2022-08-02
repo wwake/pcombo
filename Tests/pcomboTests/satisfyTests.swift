@@ -16,7 +16,7 @@ final class satisfyTests: XCTestCase {
 
     let result = parser.parse([3, 2, 1])
 
-    checkFailure(result, .failure(0, "Did not find expected value"))
+    result.checkFailure(.failure(0, "Did not find expected value"))
   }
 
   func testSatisfyWithMessageThatFailsToMatch() throws {
@@ -24,7 +24,7 @@ final class satisfyTests: XCTestCase {
 
     let result = parser.parse([3, 2, 1])
 
-    checkFailure(result, .failure(0, "my message"))
+    result.checkFailure(.failure(0, "my message"))
   }
 
   func testSatisfyWithDefaultMessageFailsOnEmptyInput() throws {
@@ -33,7 +33,7 @@ final class satisfyTests: XCTestCase {
     let emptyInput = [0,1,2][3...]
     let result = parser.parse(emptyInput)
 
-    checkFailure(result, .failure(3, "Did not find expected value"))
+    result.checkFailure(.failure(3, "Did not find expected value"))
   }
 
   func testSatisfyWithMessageFailsOnEmptyInput() throws {
@@ -42,6 +42,6 @@ final class satisfyTests: XCTestCase {
     let emptyInput = [0,1,2][3...]
     let result = parser.parse(emptyInput)
 
-    checkFailure(result, .failure(3, "didn't find"))
+    result.checkFailure(.failure(3, "didn't find"))
   }
 }

@@ -20,7 +20,7 @@ final class AndThenTests: XCTestCase {
 
     let result = parser.parse([42,2,5])
 
-    checkFailure(result, .failure(0, "Did not find expected value"))
+    result.checkFailure(.failure(0, "Did not find expected value"))
   }
 
   func testAndThenArrayFailsIfOnlyFirstItemMatches() throws {
@@ -30,7 +30,7 @@ final class AndThenTests: XCTestCase {
 
     let result = parser.parse([1,4,5])
 
-    checkFailure(result, .failure(1, "Did not find expected value"))
+    result.checkFailure(.failure(1, "Did not find expected value"))
   }
 
   func testAndThenArrayOperator() throws {
@@ -112,7 +112,7 @@ final class AndThenTests: XCTestCase {
 
     let result = parser.parse([1,42,3])
 
-    checkFailure(result, .failure(1, "Did not find expected value"))
+    result.checkFailure(.failure(1, "Did not find expected value"))
   }
 
   func testAndThenArrayElementFailsIfOnlyFirstItemMatches() throws {
@@ -124,7 +124,7 @@ final class AndThenTests: XCTestCase {
 
     let result = parser.parse([1,2,5])
 
-    checkFailure(result, .failure(2, "Did not find expected value"))
+    result.checkFailure(.failure(2, "Did not find expected value"))
   }
 
   func testAndThenElementArrayYieldsArray() throws {
@@ -148,7 +148,7 @@ final class AndThenTests: XCTestCase {
 
     let result = parser.parse([42,2,3])
 
-    checkFailure(result, .failure(0, "Did not find expected value"))
+    result.checkFailure(.failure(0, "Did not find expected value"))
   }
 
   func testAndThenElementArrayFailsIfOnlyFirstItemMatches() throws {
@@ -160,7 +160,7 @@ final class AndThenTests: XCTestCase {
 
     let result = parser.parse([1,2,5])
 
-    checkFailure(result, .failure(2, "Did not find expected value"))
+    result.checkFailure(.failure(2, "Did not find expected value"))
   }
 
   func testAndThenArrayArrayYieldsArrayOfArrays() throws {
@@ -195,7 +195,7 @@ final class AndThenTests: XCTestCase {
 
     let result = parser.parse([11,2,3])
 
-    checkFailure(result, .failure(0, "Did not find expected value"))
+    result.checkFailure(.failure(0, "Did not find expected value"))
   }
 
   func testAndThenKeepLeftFailsIfSecondItemFailsToMatch() throws {
@@ -206,7 +206,7 @@ final class AndThenTests: XCTestCase {
 
     let result = parser.parse([1,22,3])
 
-    checkFailure(result, .failure(1, "Did not find expected value"))
+    result.checkFailure(.failure(1, "Did not find expected value"))
   }
 
   func testAndThenKeepRightYieldsRight() throws {
@@ -228,7 +228,7 @@ final class AndThenTests: XCTestCase {
 
     let result = parser.parse([11,2,3])
 
-    checkFailure(result, .failure(0, "Did not find expected value"))
+    result.checkFailure(.failure(0, "Did not find expected value"))
   }
 
   func testAndThenKeepRightFailsIfSecondItemFailsToMatch() throws {
@@ -239,6 +239,6 @@ final class AndThenTests: XCTestCase {
 
     let result = parser.parse([1,22,3])
 
-    checkFailure(result, .failure(1, "Did not find expected value"))
+    result.checkFailure(.failure(1, "Did not find expected value"))
   }
 }

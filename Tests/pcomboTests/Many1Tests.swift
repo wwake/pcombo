@@ -43,6 +43,6 @@ final class Many1Tests: XCTestCase {
 
     let result = grammar.parse([2,1,2])
 
-    checkFailure(result, .failure(0, "Did not find expected value"))
+    result.checkFailure(.failure(0, "Did not find expected value"))
   }
 }
