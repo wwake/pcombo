@@ -79,12 +79,6 @@ final class CommaTests: XCTestCase {
 
     let result = grammar.parse([2,1,2,3])
 
-    guard case let .failure(position, message) = result else {
-      XCTFail("Result was \(result)")
-      return
-    }
-
-    XCTAssertEqual(position, 0)
-    XCTAssertEqual(message, "Did not find expected value")
+    result.checkFailure(.failure(0, "Did not find expected value"))
   }
 }

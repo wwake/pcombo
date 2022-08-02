@@ -9,12 +9,7 @@ final class peekTests: XCTestCase {
 
     let result = parser.parse([1,2])
 
-    guard case let .success(target, remaining) = result else {
-      XCTFail("Result was \(result)")
-      return
-    }
-    XCTAssertEqual(target, 0, "target")
-    XCTAssertEqual(remaining, [1,2], "remaining")
+    result.checkSuccess(0, [1,2])
   }
 
   func testPeekReturnsFailureWhenItFailsToMatch() throws {
@@ -23,11 +18,6 @@ final class peekTests: XCTestCase {
 
     let result = parser.parse([2,1])
 
-    guard case let .failure(location, message) = result else {
-      XCTFail("Result was \(result)")
-      return
-    }
-    XCTAssertEqual(location, 0)
-    XCTAssertEqual(message, "Did not find expected value")
+    result.checkFailure(.failure(0, "Did not find expected value"))
   }
 }

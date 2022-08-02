@@ -2,10 +2,10 @@ import XCTest
 @testable import pcombo
 
 final class OrElseTests: XCTestCase {
+  let sat1 = satisfy<Int> { $0 == 1 }
+  let sat2 = satisfy<Int> { $0 == 2 }
 
   func testOrElseCanMatchFirstItem() throws {
-    let sat1 = satisfy<Int> { $0 == 1 }
-    let sat2 = satisfy<Int> { $0 == 2 }
     let parser = OrElse<satisfy<Int>, satisfy<Int>>(sat1, sat2)
 
     let result = parser.parse([1,4,5])
@@ -14,8 +14,6 @@ final class OrElseTests: XCTestCase {
   }
 
   func testOrElseCanMatchSecondItem() throws {
-    let sat1 = satisfy<Int> { $0 == 1 }
-    let sat2 = satisfy<Int> { $0 == 2 }
     let parser = OrElse<satisfy<Int>, satisfy<Int>>(sat1, sat2)
 
     let result = parser.parse([2,4,5])
@@ -24,8 +22,6 @@ final class OrElseTests: XCTestCase {
   }
 
   func testOrElseFailsToMatch() throws {
-    let sat1 = satisfy<Int> { $0 == 1 }
-    let sat2 = satisfy<Int> { $0 == 2 }
     let parser = OrElse<satisfy<Int>, satisfy<Int>>(sat1, sat2)
 
     let result = parser.parse([3,4,5])
@@ -34,8 +30,6 @@ final class OrElseTests: XCTestCase {
   }
 
   func testOrElseOperator() throws {
-    let sat1 = satisfy { $0 == 1 }
-    let sat2 = satisfy { $0 == 2 }
     let parser = sat1 <|> sat2
 
     let result = parser.parse([2,4,5])

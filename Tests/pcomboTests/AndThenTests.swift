@@ -2,10 +2,12 @@
 import XCTest
 
 final class AndThenTests: XCTestCase {
+  let sat1 = satisfy<Int> { $0 == 1 }
+  let sat2 = satisfy<Int> { $0 == 2 }
+  let sat3 = satisfy<Int> { $0 == 3 }
+  let sat4 = satisfy<Int> { $0 == 4 }
 
   func testAndThenArrayMatchesBothItems() throws {
-    let sat1 = satisfy<Int> { $0 == 1 }
-    let sat2 = satisfy<Int> { $0 == 2 }
     let parser = AndThenArray<satisfy<Int>>(sat1, sat2)
 
     let result = parser.parse([1,2,5])
@@ -14,8 +16,6 @@ final class AndThenTests: XCTestCase {
   }
 
   func testAndThenArrayFailsIfFirstItemFailsToMatch() throws {
-    let sat1 = satisfy<Int> { $0 == 1 }
-    let sat2 = satisfy<Int> { $0 == 2 }
     let parser = AndThenArray<satisfy<Int>>(sat1, sat2)
 
     let result = parser.parse([42,2,5])
@@ -24,8 +24,6 @@ final class AndThenTests: XCTestCase {
   }
 
   func testAndThenArrayFailsIfOnlyFirstItemMatches() throws {
-    let sat1 = satisfy<Int> { $0 == 1 }
-    let sat2 = satisfy<Int> { $0 == 2 }
     let parser = AndThenArray<satisfy<Int>>(sat1, sat2)
 
     let result = parser.parse([1,4,5])
@@ -34,8 +32,6 @@ final class AndThenTests: XCTestCase {
   }
 
   func testAndThenArrayOperator() throws {
-    let sat1 = satisfy<Int> { $0 == 1 }
-    let sat2 = satisfy<Int> { $0 == 2 }
     let parser = sat1 <&> sat2
 
     let result = parser.parse([1,2,5])
@@ -44,8 +40,6 @@ final class AndThenTests: XCTestCase {
   }
 
   func testAndThenTupleReturnsTupleForNonMatchingTypes() throws {
-    let sat1 = satisfy<Int> { $0 == 1 }
-    let sat2 = satisfy<Int> { $0 == 2 }
     let parser = sat1 <&> (sat2 |> { Double($0) })
 
     let result = parser.parse([1,2,5])
@@ -92,10 +86,6 @@ final class AndThenTests: XCTestCase {
   }
 
   func testAndThenArrayElementYieldsArray() throws {
-    let sat1 = satisfy<Int> { $0 == 1 }
-    let sat2 = satisfy<Int> { $0 == 2 }
-    let sat3 = satisfy<Int> { $0 == 3 }
-
     let parser = sat1 <&> sat2 <&> sat3
 
     let result = parser.parse([1,2,3,4])
@@ -104,10 +94,6 @@ final class AndThenTests: XCTestCase {
   }
 
   func testAndThenArrayElementFailsIfFirstItemFailsToMatch() throws {
-    let sat1 = satisfy<Int> { $0 == 1 }
-    let sat2 = satisfy<Int> { $0 == 2 }
-    let sat3 = satisfy<Int> { $0 == 3 }
-
     let parser = (sat1 <&> sat2) <&> sat3
 
     let result = parser.parse([1,42,3])
@@ -116,10 +102,6 @@ final class AndThenTests: XCTestCase {
   }
 
   func testAndThenArrayElementFailsIfOnlyFirstItemMatches() throws {
-    let sat1 = satisfy<Int> { $0 == 1 }
-    let sat2 = satisfy<Int> { $0 == 2 }
-    let sat3 = satisfy<Int> { $0 == 3 }
-
     let parser = (sat1 <&> sat2) <&> sat3
 
     let result = parser.parse([1,2,5])
@@ -128,10 +110,6 @@ final class AndThenTests: XCTestCase {
   }
 
   func testAndThenElementArrayYieldsArray() throws {
-    let sat1 = satisfy<Int> { $0 == 1 }
-    let sat2 = satisfy<Int> { $0 == 2 }
-    let sat3 = satisfy<Int> { $0 == 3 }
-
     let parser = sat1 <&> (sat2 <&> sat3)
 
     let result = parser.parse([1,2,3,4])
@@ -140,10 +118,6 @@ final class AndThenTests: XCTestCase {
   }
 
   func testAndThenElementArrayFailsIfFirstItemFailsToMatch() throws {
-    let sat1 = satisfy<Int> { $0 == 1 }
-    let sat2 = satisfy<Int> { $0 == 2 }
-    let sat3 = satisfy<Int> { $0 == 3 }
-
     let parser = sat1 <&> (sat2 <&> sat3)
 
     let result = parser.parse([42,2,3])
@@ -152,10 +126,6 @@ final class AndThenTests: XCTestCase {
   }
 
   func testAndThenElementArrayFailsIfOnlyFirstItemMatches() throws {
-    let sat1 = satisfy<Int> { $0 == 1 }
-    let sat2 = satisfy<Int> { $0 == 2 }
-    let sat3 = satisfy<Int> { $0 == 3 }
-
     let parser = sat1 <&> (sat2 <&> sat3)
 
     let result = parser.parse([1,2,5])
@@ -164,11 +134,6 @@ final class AndThenTests: XCTestCase {
   }
 
   func testAndThenArrayArrayYieldsArrayOfArrays() throws {
-    let sat1 = satisfy<Int> { $0 == 1 }
-    let sat2 = satisfy<Int> { $0 == 2 }
-    let sat3 = satisfy<Int> { $0 == 3 }
-    let sat4 = satisfy<Int> { $0 == 4 }
-
     let parser = (sat1 <&> sat2) <&> (sat3 <&> sat4)
 
     let result = parser.parse([1,2,3,4,5])
@@ -177,9 +142,6 @@ final class AndThenTests: XCTestCase {
   }
 
   func testAndThenKeepLeftYieldsLeft() throws {
-    let sat1 = satisfy<Int> { $0 == 1 }
-    let sat2 = satisfy<Int> { $0 == 2 }
-
     let parser = sat1 <& sat2
 
     let result = parser.parse([1,2,3])
@@ -188,9 +150,6 @@ final class AndThenTests: XCTestCase {
   }
 
   func testAndThenKeepLeftFailsIfFirstItemFailsToMatch() throws {
-    let sat1 = satisfy<Int> { $0 == 1 }
-    let sat2 = satisfy<Int> { $0 == 2 }
-
     let parser = sat1 <& sat2
 
     let result = parser.parse([11,2,3])
@@ -199,9 +158,6 @@ final class AndThenTests: XCTestCase {
   }
 
   func testAndThenKeepLeftFailsIfSecondItemFailsToMatch() throws {
-    let sat1 = satisfy<Int> { $0 == 1 }
-    let sat2 = satisfy<Int> { $0 == 2 }
-
     let parser = sat1 <& sat2
 
     let result = parser.parse([1,22,3])
@@ -210,9 +166,6 @@ final class AndThenTests: XCTestCase {
   }
 
   func testAndThenKeepRightYieldsRight() throws {
-    let sat1 = satisfy<Int> { $0 == 1 }
-    let sat2 = satisfy<Int> { $0 == 2 }
-
     let parser = sat1 &> sat2
 
     let result = parser.parse([1,2,3])
@@ -232,9 +185,6 @@ final class AndThenTests: XCTestCase {
   }
 
   func testAndThenKeepRightFailsIfSecondItemFailsToMatch() throws {
-    let sat1 = satisfy<Int> { $0 == 1 }
-    let sat2 = satisfy<Int> { $0 == 2 }
-
     let parser = sat1 &> sat2
 
     let result = parser.parse([1,22,3])

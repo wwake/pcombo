@@ -9,8 +9,10 @@
 import XCTest
 
 final class ManyTests: XCTestCase {
+  let sat1 = satisfy {$0 == 1}
+  let sat2 = satisfy {$0 == 2}
+
   func testMany1WithNoMatchesReturnsEmptyArray() {
-    let sat1 = satisfy {$0 == 1}
     let grammar = <*>sat1
 
     let result = grammar.parse([2,1,2])
@@ -20,7 +22,6 @@ final class ManyTests: XCTestCase {
   }
 
   func testManyWithOneMatch() throws {
-    let sat1 = satisfy {$0 == 1}
     let grammar = <*>sat1
 
     let result = grammar.parse([1,2])
@@ -29,7 +30,6 @@ final class ManyTests: XCTestCase {
   }
 
   func testManyWithMultipleMatches() throws {
-    let sat1 = satisfy {$0 == 1}
     let grammar = <*>sat1
 
     let result = grammar.parse([1,1,2])
@@ -38,8 +38,6 @@ final class ManyTests: XCTestCase {
   }
 
   func testManyWithMultipleParsersMultipleMatches() throws {
-    let sat1 = satisfy {$0 == 1}
-    let sat2 = satisfy {$0 == 2}
     let grammar = <*>(sat1 <|> sat2)
 
     let result = grammar.parse([1,1,2])

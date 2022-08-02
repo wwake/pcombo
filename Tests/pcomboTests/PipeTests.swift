@@ -8,8 +8,6 @@
 @testable import pcombo
 import XCTest
 
-
-
 final class PipeTests: XCTestCase {
   func testPipeConvertIntToCharacter() {
     let sat1 = satisfy<Int> { _ in true }
