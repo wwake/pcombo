@@ -17,7 +17,7 @@ final class PipeTests: XCTestCase {
 
     let result = pipe.parse([1, 0, 3])
 
-    checkSuccess(result, "B", [0,3])
+    result.checkSuccess("B", [0,3])
   }
 
   func testPipeOnFailedParserReturnsFailure() {
@@ -35,6 +35,6 @@ final class PipeTests: XCTestCase {
 
     let result = pipe.parse([1, 0, 3])
 
-    checkSuccess(result, "B", [0,3])
+    result.checkSuccess("B", [0,3])
   }
 }

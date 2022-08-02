@@ -10,7 +10,7 @@ final class OrElseTests: XCTestCase {
 
     let result = parser.parse([1,4,5])
 
-    checkSuccess(result, 1, [4,5])
+    result.checkSuccess(1, [4,5])
   }
 
   func testOrElseCanMatchSecondItem() throws {
@@ -20,7 +20,7 @@ final class OrElseTests: XCTestCase {
 
     let result = parser.parse([2,4,5])
 
-    checkSuccess(result, 2, [4,5])
+    result.checkSuccess(2, [4,5])
   }
 
   func testOrElseFailsToMatch() throws {
@@ -40,6 +40,6 @@ final class OrElseTests: XCTestCase {
 
     let result = parser.parse([2,4,5])
 
-    checkSuccess(result, 2, [4,5])
+    result.checkSuccess(2, [4,5])
   }
 }

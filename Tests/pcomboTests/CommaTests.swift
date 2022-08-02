@@ -59,7 +59,7 @@ final class CommaTests: XCTestCase {
 
     let result = grammar.parse([1,3])
 
-    checkSuccess(result, [1], [3])
+    result.checkSuccess([1], [3])
   }
 
   public func testCommaLeftMatchingMultipleItems() {
@@ -69,7 +69,7 @@ final class CommaTests: XCTestCase {
 
     let result = grammar.parse([1,2,1,3])
 
-    checkSuccess(result, [1, 1], [3])
+    result.checkSuccess([1, 1], [3])
   }
 
   public func testCommaLeftFailsToMatchFirstItem() {

@@ -15,7 +15,7 @@ final class Many1Tests: XCTestCase {
 
     let result = grammar.parse([1,2])
 
-    checkSuccess(result, [1], [2])
+    result.checkSuccess([1], [2])
   }
 
   func testMany1WithMultipleMatches() throws {
@@ -24,7 +24,7 @@ final class Many1Tests: XCTestCase {
 
     let result = grammar.parse([1,1,2])
 
-    checkSuccess(result, [1,1], [2])
+    result.checkSuccess([1,1], [2])
   }
 
   func testMany1WithMultipleParsersMultipleMatches() throws {
@@ -34,7 +34,7 @@ final class Many1Tests: XCTestCase {
 
     let result = grammar.parse([1,1,2,3])
 
-    checkSuccess(result, [1,1,2], [3])
+    result.checkSuccess([1,1,2], [3])
   }
 
   func testMany1WithNoMatchesReturnsFailure() {

@@ -16,7 +16,7 @@ final class ManyTests: XCTestCase {
     let result = grammar.parse([2,1,2])
 
     let emptyValues = [Int]()
-    checkSuccess(result, emptyValues, [2,1,2])
+    result.checkSuccess(emptyValues, [2,1,2])
   }
 
   func testManyWithOneMatch() throws {
@@ -25,7 +25,7 @@ final class ManyTests: XCTestCase {
 
     let result = grammar.parse([1,2])
 
-    checkSuccess(result, [1], [2])
+    result.checkSuccess([1], [2])
   }
 
   func testManyWithMultipleMatches() throws {
@@ -34,7 +34,7 @@ final class ManyTests: XCTestCase {
 
     let result = grammar.parse([1,1,2])
 
-    checkSuccess(result, [1,1], [2])
+    result.checkSuccess([1,1], [2])
   }
 
   func testManyWithMultipleParsersMultipleMatches() throws {
@@ -44,6 +44,6 @@ final class ManyTests: XCTestCase {
 
     let result = grammar.parse([1,1,2])
 
-    checkSuccess(result, [1,1,2], [])
+    result.checkSuccess([1,1,2], [])
   }
 }

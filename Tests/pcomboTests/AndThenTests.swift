@@ -10,7 +10,7 @@ final class AndThenTests: XCTestCase {
 
     let result = parser.parse([1,2,5])
 
-    checkSuccess(result, [1, 2], [5])
+    result.checkSuccess([1, 2], [5])
   }
 
   func testAndThenArrayFailsIfFirstItemFailsToMatch() throws {
@@ -40,7 +40,7 @@ final class AndThenTests: XCTestCase {
 
     let result = parser.parse([1,2,5])
 
-    checkSuccess(result, [1, 2], [5])
+    result.checkSuccess([1, 2], [5])
   }
 
   func testAndThenTupleReturnsTupleForNonMatchingTypes() throws {
@@ -100,7 +100,7 @@ final class AndThenTests: XCTestCase {
 
     let result = parser.parse([1,2,3,4])
 
-    checkSuccess(result, [1, 2, 3], [4])
+    result.checkSuccess([1, 2, 3], [4])
   }
 
   func testAndThenArrayElementFailsIfFirstItemFailsToMatch() throws {
@@ -136,7 +136,7 @@ final class AndThenTests: XCTestCase {
 
     let result = parser.parse([1,2,3,4])
 
-    checkSuccess(result, [1, 2, 3], [4])
+    result.checkSuccess([1, 2, 3], [4])
   }
 
   func testAndThenElementArrayFailsIfFirstItemFailsToMatch() throws {
@@ -173,7 +173,7 @@ final class AndThenTests: XCTestCase {
 
     let result = parser.parse([1,2,3,4,5])
 
-    checkSuccess(result, [[1, 2], [3, 4]], [5])
+    result.checkSuccess([[1, 2], [3, 4]], [5])
   }
 
   func testAndThenKeepLeftYieldsLeft() throws {
@@ -184,7 +184,7 @@ final class AndThenTests: XCTestCase {
 
     let result = parser.parse([1,2,3])
 
-    checkSuccess(result, 1, [3])
+    result.checkSuccess(1, [3])
   }
 
   func testAndThenKeepLeftFailsIfFirstItemFailsToMatch() throws {
@@ -217,7 +217,7 @@ final class AndThenTests: XCTestCase {
 
     let result = parser.parse([1,2,3])
 
-    checkSuccess(result, 2, [3])
+    result.checkSuccess(2, [3])
   }
 
   func testAndThenKeepRightFailsIfFirstItemFailsToMatch() throws {

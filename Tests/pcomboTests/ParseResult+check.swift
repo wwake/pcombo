@@ -9,6 +9,22 @@ import Foundation
 import XCTest
 @testable import pcombo
 
+extension ParseResult {
+  func checkSuccess(
+    _ expectedTarget: Target,
+    _ expectedRemaining: ArraySlice<Input>)
+  where Target: Equatable, Input: Equatable
+  {
+    guard case let .success(target, remaining) = self else {
+      XCTFail("Result was \(self)")
+      return
+    }
+    XCTAssertEqual(target, expectedTarget, "target")
+    XCTAssertEqual(remaining, expectedRemaining, "remaining")
+  }
+
+}
+
 func checkSuccess<T: Equatable>(
   _ actual: ParseResult<Int, T>,
   _ expectedTarget: T,
@@ -33,3 +49,4 @@ func checkFailure<T: Equatable>(_ actual: ParseResult<Int, T>, _ expected: Parse
 
   XCTFail("Expected \(expected) but got \(actual)")
 }
+

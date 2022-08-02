@@ -8,7 +8,7 @@ final class satisfyTests: XCTestCase {
 
     let result = parser.parse([3, 2, 1])
 
-    checkSuccess(result, 3, [2,1])
+    result.checkSuccess(3, [2,1])
   }
 
   func testSatisfyWithDefaultMessageThatFailsToMatch() throws {

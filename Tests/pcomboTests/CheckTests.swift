@@ -19,7 +19,7 @@ final class CheckTests: XCTestCase {
     let one = satisfy { $0 == 1 }
     let parser = <+>one <&| sumShouldBeEven
     let result = parser.parse([1,1,1,1,2])
-    checkSuccess(result, [1,1,1,1], [2])
+    result.checkSuccess([1,1,1,1], [2])
   }
 
   func testReturnsFailureWhenCheckFails() {

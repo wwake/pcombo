@@ -9,7 +9,7 @@ final class OptionalTests: XCTestCase {
 
     let result = grammar.parse([1,2])
 
-    checkSuccess(result, 1, [2])
+    result.checkSuccess(1, [2])
   }
 
   func testOptionalThatFailsToMatch() throws {
@@ -18,6 +18,6 @@ final class OptionalTests: XCTestCase {
 
     let result = grammar.parse([2])
 
-    checkSuccess(result, nil, [2])
+    result.checkSuccess(nil, [2])
   }
 }

@@ -1,7 +1,7 @@
 @testable import pcombo
 import XCTest
 
-final class Tests: XCTestCase {
+final class BindTests: XCTestCase {
   func testBindFromConstructorDefinesParserImmediately() throws {
     let digit = satisfy { $0 == 1 }
 
@@ -9,7 +9,7 @@ final class Tests: XCTestCase {
 
     let result = number.parse([1,2])
 
-    checkSuccess(result, 1, [2])
+    result.checkSuccess(1, [2])
   }
 
   func testBindFromFunctionCanDefineParserLaterForRecurion() throws {
@@ -22,7 +22,7 @@ final class Tests: XCTestCase {
 
     let result = expr.parse([2,2,1,9])
 
-    checkSuccess(result, [2,2,1], [9])
+    result.checkSuccess([2,2,1], [9])
   }
 
   // Semi-manual test - precondition check
@@ -36,5 +36,4 @@ final class Tests: XCTestCase {
 //
 //    let result = parser.parse([2,2,1,9])
 //  }
-
 }
