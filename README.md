@@ -42,7 +42,7 @@ public protocol Parser {
 * For all variations, on failure it reports the point where it failed to find an acceptable value.
 * If p1 and p2 have the same target type, returns an array of results.
 * If p1 is of a type, and p2 is an array of that type, returns an array of results.
-* If p2 is of a type, and p1 is an array of that type, returns an array of results. 
+* If p1 is an array of a type, and p2 is of that type, it returns an array of results. 
 * If p1 and p2 have different target types, returns a tuple of the two results.
 
 `<&` - Left child of sequence - both parsers must succeed, but only returns the result of the first one
