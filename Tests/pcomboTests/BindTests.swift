@@ -13,11 +13,11 @@ final class Tests: XCTestCase {
   }
 
   func testBindFromFunctionCanDefineParserLaterForRecurion() throws {
-    let digit = satisfy { $0 == 1 } |> { [ $0 ]}
-    let minus = satisfy { $0 == 2 }
+    let one = satisfy { $0 == 1 } |> { [ $0 ]}
+    let two = satisfy { $0 == 2 }
 
     let expr = Bind<Int, [Int]>()
-    let parser = digit <|> minus <&> expr
+    let parser = one <|> two <&> expr
     expr.bind(parser.parse)
 
     let result = expr.parse([2,2,1,9])

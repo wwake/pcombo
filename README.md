@@ -39,13 +39,47 @@ public enum ParseResult<Input, Target> {
 `<&>` - **Sequence** - multiplication precedence - `p1 <&> p2`
 
 * For all variations, on failure it reports the point where it failed to find an acceptable value.
-* If p1 and p2 have the same target type, returns an array of results. 
+* If p1 and p2 have the same target type, returns an array of results.
+* If p1 is of a type, and p2 is an array of that type, returns an array of results.
+* If p2 is of a type, and p1 is an array of that type, returns an array of results. 
 * If p1 and p2 have different target types, returns a tuple of the two results.
+
+`<&` - Left child of sequence - both parsers must succeed, but only returns the result of the first one
+
+`&>` - Right child of sequence - both parsers must succeed, but only returns the result of the second one
+
+### Optional
+`<?>` - **Optional - 0 or 1** - succeeds whether or not the parser does; returns the parser's value or nil
 
 ### Repetition
 `<*>` - **Many (0 or more)** - prefix operator - `<*>p` returns an array of 0 or more values. (It can't return failure.)
 
 `<+>` - **Many1 (1 or more)** - prefix operator - `<+>p` returns an array of 1 or values if the parse succeeds at least once, else returns failure 
 
+`<&&>` - A <&&> B = A <&> <*>(B <&> A) - return tuples or arrays depending on whether types match
+
+`<&&` - A <&& B = A <&> <*>(B &> A) - matches as <&&> but ignores the B results and returns [A]
+
 ### Transformation
 `|>` - **Pipe** - multiplication precedence - `parser |> function` runs the parser. If it succeeds, it transforms the result via the function; if it fails, it returns failure. 
+
+
+### Specialized
+`peek(parser)` - **Peek** - runs the parser. If it fails, return failure. If it succeeds, return (0, input) ie untouched input. This lets you fail early rather than go down a long but incorrect path.
+
+`Bind()` - **Bind** - allows you to wrap a parsing function so that you can define recursive parsers, or use parsers with non-standard names.
+
+Example:
+```
+    let one = satisfy { $0 == 1 } |> { [ $0 ]}
+    let two = satisfy { $0 == 2 }
+
+    let expr = Bind<Int, [Int]>()
+    let parser = one <|> two <&> expr
+    expr.bind(parser.parse)
+
+    let result = expr.parse([2,2,1,9])
+
+    checkSuccess(result, [2,2,1], [9])
+```
+
