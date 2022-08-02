@@ -16,7 +16,8 @@ public enum ParseResult<Input, Target> {
 }
 ```
 
-```public protocol Parser {
+```
+public protocol Parser {
   associatedtype Input
   associatedtype Target
   func parse(_: ArraySlice<Input>) -> ParseResult<Input, Target>
@@ -56,9 +57,9 @@ public enum ParseResult<Input, Target> {
 
 `<+>` - **Many1 (1 or more)** - prefix operator - `<+>p` returns an array of 1 or values if the parse succeeds at least once, else returns failure 
 
-`<&&>` - A <&&> B = A <&> <*>(B <&> A) - return tuples or arrays depending on whether types match
+`<&&>` - `A <&&> B = A <&> <*>(B <&> A)` - return tuples or arrays depending on whether types match
 
-`<&&` - A <&& B = A <&> <*>(B &> A) - matches as <&&> but ignores the B results and returns [A]
+`<&&` - `A <&& B = A <&> <*>(B &> A)` - matches as <&&> but ignores the B results and returns [A]
 
 ### Transformation
 `|>` - **Pipe** - multiplication precedence - `parser |> function` runs the parser. If it succeeds, it transforms the result via the function; if it fails, it returns failure. 
@@ -70,6 +71,7 @@ public enum ParseResult<Input, Target> {
 `Bind()` - **Bind** - allows you to wrap a parsing function so that you can define recursive parsers, or use parsers with non-standard names.
 
 Example:
+
 ```
     let one = satisfy { $0 == 1 } |> { [ $0 ]}
     let two = satisfy { $0 == 2 }
@@ -80,10 +82,10 @@ Example:
 
     let result = expr.parse([2,2,1,9])
 
-    checkSuccess(result, [2,2,1], [9])
+    result.checkSuccess([2,2,1], [9])
 ```
 
-`<&|` - **Check** -  parser <&| function - if the parser fails, return the failure. If it succeeds, run the check function. If that returns nil, there was no problem, so return the parse result. If not nil, it returns a location and message, used to return .failure. 
+`<&|` - **Check** -  `parser <&| function` - if the parser fails, return the failure. If it succeeds, run the check function. If that returns nil, there was no problem, so return the parse result. If not nil, it returns a location and message, used to return .failure. 
 
 ```
   func sumShouldBeEven(_ values: [Int]) -> (Int, String)? {
@@ -96,6 +98,6 @@ Example:
     let one = satisfy { $0 == 1 }
     let parser = <+>one <&| sumShouldBeEven
     let result = parser.parse([1,1,1,1,2])
-    checkSuccess(result, [1,1,1,1], [2])
+    result.checkSuccess([1,1,1,1], [2])
   }
 ``` 
