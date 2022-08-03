@@ -134,4 +134,61 @@ final class GrammarTests: XCTestCase {
 
     XCTAssertEqual(remaining, [])
   }
+
+  indirect enum Expression: Equatable {
+    case number(String)
+    case variable(String)
+    case op2(Expression, String, Expression)
+  }
+
+  func toExpression(_ argument: (Expression, [(String, Expression)])) -> Expression {
+    let (factor1, array) = argument
+    var result = factor1
+    array.forEach { (op, factor2) in
+      result = .op2(result, op, factor2)
+    }
+    return result
+  }
+
+  func exprParser() -> Bind<String, Expression> {
+    let number = match("42") |> { Expression.number($0) }
+    let variable = match("x") |> { Expression.variable($0) }
+
+    let expression = Bind<String, Expression>()
+
+    let factor = number <|> variable <|> (match("(") &> expression <& match(")"))
+
+    let term = (factor <&&> ( match("*") <|> match("/"))) |> toExpression
+
+    let sum = (term <&&> ( match("+") <|> match("-")))
+      |> toExpression
+
+    expression.bind(sum.parse)
+
+    return expression
+  }
+
+  // term -> factor <*>( ("*"|"/") factor)
+  // factor -> number | variable | "(" expression ")
+
+  func testExpressions() {
+    let input = ["x", "*", "42", "/", "x"]
+    let result = exprParser().parse(input[...])
+    result.checkSuccess(
+      .op2(
+        .op2(.variable("x"), "*", .number("42")),
+        "/",
+        .variable("x")), [])
+  }
+
+  func testExpressionPrecedence() {
+    let input = ["x", "+", "42", "*", "42"]
+    let result = exprParser().parse(input[...])
+    result.checkSuccess(
+      .op2(
+        .variable("x"),
+        "+",
+        .op2(.number("42"), "*", .number("42"))),
+         [])
+  }
 }
