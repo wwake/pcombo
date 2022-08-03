@@ -4,7 +4,10 @@ import XCTest
 indirect enum Statement: Equatable {
   case skip
   case print
+  case ifGoto(String)
   case ifStatement(Statement, Statement)
+  case block([Statement])
+  case line(String, Statement)
 }
 
 final class GrammarTests: XCTestCase {
@@ -49,14 +52,60 @@ final class GrammarTests: XCTestCase {
     XCTAssertEqual(remaining, [])
   }
 
-  func testBasicMultipleStatementsPerLine() {
+  func makeBlock(_ statements: [Statement]) -> Statement {
+    if statements.count == 1 {
+      return statements[0]
+    } else {
+      return Statement.block(statements)
+    }
+  }
+
+  func basicLineParser() -> Bind<String, Statement> {
     let statement = Bind<String, Statement>()
 
-    let printStatement = satisfy{$0 == "print"} |> { _ in Statement.print }
+    let lineNumber = match("100")
 
-    //let ifGoto =
+    let print = match("print") |> { _ in Statement.print }
 
-    let lineNumber = satisfy{$0 == "100"}
-    //let lineParser =
+    let ifGoto = match("if") &> lineNumber
+                    |> { Statement.ifGoto($0)}
+
+    let ifStatements = match("if") &> (statement <&& match(":"))
+                    |> { Statement.ifStatement(.block($0), .skip)}
+
+    let statementParser = print <|> ifGoto <|> ifStatements
+
+    statement.bind(statementParser.parse)
+
+    let statementBlock = statement <&& match(":") |> makeBlock
+
+    let lineParser = (lineNumber <&> statementBlock)
+      |> { (lineNumber, statements) in Statement.line(lineNumber, statements)}
+
+    return Bind(lineParser.parse)
+  }
+
+  func testBasicMultipleStatementAmbiguity() {
+    let parser = basicLineParser()
+
+    // 100 IF A THEN PRINT 1: PRINT 2
+    let input = ["100", "if", "print", ":", "print"]
+
+    let result = parser.parse(input[...])
+
+    guard case let .success(target, remaining) = result else {
+      XCTFail("\(result)")
+      return
+    }
+
+    XCTAssertEqual(
+      target,
+     .line("100",
+      .ifStatement(
+        .block([.print, .print]),
+        .skip))
+    )
+
+    XCTAssertEqual(remaining, [])
   }
 }
