@@ -108,4 +108,31 @@ final class GrammarTests: XCTestCase {
 
     XCTAssertEqual(remaining, [])
   }
+
+  func testBasicNestedIfStatementAmbiguity() {
+    let parser = basicLineParser()
+
+    // 100 IF A THEN PRINT 1: IF B THEN PRINT 2: PRINT 3
+    let input = ["100", "if", "print", ":",
+                 "if", "print", ":", "print"]
+
+    let result = parser.parse(input[...])
+
+    guard case let .success(target, remaining) = result else {
+      XCTFail("\(result)")
+      return
+    }
+
+    XCTAssertEqual(
+      target,
+      .line("100",
+            .ifStatement(
+              .block([
+                .print,
+                .ifStatement(.block([.print, .print]), .skip)]),
+              .skip))
+    )
+
+    XCTAssertEqual(remaining, [])
+  }
 }
