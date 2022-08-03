@@ -68,22 +68,21 @@ final class GrammarTests: XCTestCase {
     let print = match("print") |> { _ in Statement.print }
 
     let ifGoto = match("if") &> lineNumber
-                    |> { Statement.ifGoto($0)}
+    |> { Statement.ifGoto($0)}
 
     let ifStatements = match("if") &> (statement <&& match(":"))
-                    |> { Statement.ifStatement(.block($0), .skip)}
+    |> { Statement.ifStatement(.block($0), .skip)}
 
     let statementParser = print <|> ifGoto <|> ifStatements
 
     statement.bind(statementParser.parse)
 
-    let statementBlock = statement <&& match(":") |> makeBlock
-
-    let lineParser = (lineNumber <&> statementBlock)
-      |> { (lineNumber, statements) in Statement.line(lineNumber, statements)}
+    let lineParser = (lineNumber <&> (statement <&& match(":")))
+    |> { (lineNumber, statements) in Statement.line(lineNumber, self.makeBlock(statements))}
 
     return Bind(lineParser.parse)
   }
+
 
   func testBasicMultipleStatementAmbiguity() {
     let parser = basicLineParser()
