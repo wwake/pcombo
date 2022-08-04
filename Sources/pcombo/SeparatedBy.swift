@@ -7,8 +7,9 @@
 
 import Foundation
 
-public class Comma<P1: Parser, P2: Parser> : Parser
+public class SeparatedBy<P1: Parser, P2: Parser> : Parser
 where P1.Input == P2.Input {
+
   public typealias Input = P1.Input
   public typealias Target = (P1.Target, [(P2.Target, P1.Target)])
 
@@ -27,7 +28,7 @@ where P1.Input == P2.Input {
   }
 }
 
-public class CommaLeft<P1: Parser, P2: Parser> : Parser
+public class SeparatedByKeepLeft<P1: Parser, P2: Parser> : Parser
 where P1.Input == P2.Input {
   public typealias Input = P1.Input
   public typealias Target = [P1.Target]
@@ -48,12 +49,12 @@ where P1.Input == P2.Input {
 
 infix operator <&&> : MultiplicationPrecedence
 
-public func <&&> <P1: Parser, P2: Parser>(parser1: P1, parser2: P2) -> Comma<P1, P2> {
-  return Comma(parser1, parser2)
+public func <&&> <P1: Parser, P2: Parser>(parser1: P1, parser2: P2) -> SeparatedBy<P1, P2> {
+  return SeparatedBy(parser1, parser2)
 }
 
 infix operator <&& : MultiplicationPrecedence
 
-public func <&& <P1: Parser, P2: Parser>(parser1: P1, parser2: P2) -> CommaLeft<P1, P2> {
-  return CommaLeft(parser1, parser2)
+public func <&& <P1: Parser, P2: Parser>(parser1: P1, parser2: P2) -> SeparatedByKeepLeft<P1, P2> {
+  return SeparatedByKeepLeft(parser1, parser2)
 }
