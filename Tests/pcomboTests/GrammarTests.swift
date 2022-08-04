@@ -39,17 +39,12 @@ final class GrammarTests: XCTestCase {
     //if expr1 then if expr2 then other1 else other2
     let result = statement.parse(["if", "if", "print", "else", "print"])
 
-    guard case let .success(target, remaining) = result else {
-      XCTFail("\(result)")
-      return
-    }
-
-    XCTAssertEqual(target,
-      .ifStatement(
+    let expectedTarget =
+      Statement.ifStatement(
         .ifStatement(.print, .print),
-        .skip))
+        .skip)
 
-    XCTAssertEqual(remaining, [])
+    result.checkSuccess(expectedTarget, [])
   }
 
   func makeBlock(_ statements: [Statement]) -> Statement {
@@ -92,20 +87,13 @@ final class GrammarTests: XCTestCase {
 
     let result = parser.parse(input[...])
 
-    guard case let .success(target, remaining) = result else {
-      XCTFail("\(result)")
-      return
-    }
+    let expectedTarget =
+      Statement.line("100",
+            .ifStatement(
+              .block([.print, .print]),
+              .skip))
 
-    XCTAssertEqual(
-      target,
-     .line("100",
-      .ifStatement(
-        .block([.print, .print]),
-        .skip))
-    )
-
-    XCTAssertEqual(remaining, [])
+    result.checkSuccess(expectedTarget, [])
   }
 
   func testBasicNestedIfStatementAmbiguity() {
@@ -117,22 +105,15 @@ final class GrammarTests: XCTestCase {
 
     let result = parser.parse(input[...])
 
-    guard case let .success(target, remaining) = result else {
-      XCTFail("\(result)")
-      return
-    }
+    let expectedTarget =
+    Statement.line("100",
+                   .ifStatement(
+                    .block([
+                      .print,
+                      .ifStatement(.block([.print, .print]), .skip)]),
+                    .skip))
 
-    XCTAssertEqual(
-      target,
-      .line("100",
-            .ifStatement(
-              .block([
-                .print,
-                .ifStatement(.block([.print, .print]), .skip)]),
-              .skip))
-    )
-
-    XCTAssertEqual(remaining, [])
+    result.checkSuccess(expectedTarget, [])
   }
 
   indirect enum Expression: Equatable {
