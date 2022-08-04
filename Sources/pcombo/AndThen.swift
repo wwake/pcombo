@@ -24,19 +24,19 @@ where P1.Input == P2.Input {
     let result1 = parser1.parse(input)
 
     switch result1 {
+    case .failure(let location1, let message1):
+      return .failure(location1, message1)
+
     case .success(let target1, let remaining1):
       let result2 = parser2.parse(remaining1)
 
       switch result2 {
-      case .success(let target2, let remaining2):
-        return .success((target1, target2), remaining2)
-
       case .failure(let location2, let message2):
         return .failure(location2, message2)
-      }
 
-    case .failure(let location1, let message1):
-      return .failure(location1, message1)
+      case .success(let target2, let remaining2):
+        return .success((target1, target2), remaining2)
+      }
     }
   }
 }
@@ -58,19 +58,19 @@ public class AndThenArray<P: Parser> : Parser
     let result1 = parser1.parse(input)
 
     switch result1 {
+    case .failure(let location1, let message1):
+      return .failure(location1, message1)
+
     case .success(let target1, let remaining1):
       let result2 = parser2.parse(remaining1)
       
       switch result2 {
-      case .success(let target2, let remaining2):
-          return .success([target1, target2], remaining2)
-
       case .failure(let location2, let message2):
         return .failure(location2, message2)
-      }
 
-    case .failure(let location1, let message1):
-      return .failure(location1, message1)
+      case .success(let target2, let remaining2):
+          return .success([target1, target2], remaining2)
+      }
     }
   }
 }
@@ -94,21 +94,21 @@ where P1.Input == P2.Input,
     let result1 = parser1.parse(input)
 
     switch result1 {
+    case .failure(let location1, let message1):
+      return .failure(location1, message1)
+
     case .success(let target1, let remaining1):
       let result2 = parser2.parse(remaining1)
 
       switch result2 {
+      case .failure(let location2, let message2):
+        return .failure(location2, message2)
+
       case .success(let target2, let remaining2):
         var result = target1
         result.append(target2)
         return .success(result, remaining2)
-
-      case .failure(let location2, let message2):
-        return .failure(location2, message2)
       }
-
-    case .failure(let location1, let message1):
-      return .failure(location1, message1)
     }
   }
 }
@@ -132,24 +132,27 @@ where P1.Input == P2.Input,
     let result1 = parser1.parse(input)
 
     switch result1 {
+    case .failure(let location1, let message1):
+      return .failure(location1, message1)
+
     case .success(let target1, let remaining1):
       let result2 = parser2.parse(remaining1)
 
       switch result2 {
+      case .failure(let location2, let message2):
+        return .failure(location2, message2)
+
       case .success(let target2, let remaining2):
         var result = target2
         result.insert(target1, at:0)
         return .success(result, remaining2)
-
-      case .failure(let location2, let message2):
-        return .failure(location2, message2)
       }
-
-    case .failure(let location1, let message1):
-      return .failure(location1, message1)
     }
   }
 }
+
+// a[] = { 1, 3, 5, }
+// number() <& match(",")
 
 public class AndThenKeepLeft<P1: Parser, P2: Parser> : Parser
 where P1.Input == P2.Input {
@@ -168,19 +171,19 @@ where P1.Input == P2.Input {
     let result1 = parser1.parse(input)
 
     switch result1 {
+    case .failure(let location1, let message1):
+      return .failure(location1, message1)
+
     case .success(let target1, let remaining1):
       let result2 = parser2.parse(remaining1)
 
       switch result2 {
-      case .success(_, let remaining2):
-        return .success(target1, remaining2)
-
       case .failure(let location2, let message2):
         return .failure(location2, message2)
-      }
 
-    case .failure(let location1, let message1):
-      return .failure(location1, message1)
+      case .success(_, let remaining2):
+        return .success(target1, remaining2)
+      }
     }
   }
 }
@@ -202,19 +205,19 @@ where P1.Input == P2.Input {
     let result1 = parser1.parse(input)
 
     switch result1 {
+    case .failure(let location1, let message1):
+      return .failure(location1, message1)
+
     case .success(_, let remaining1):
       let result2 = parser2.parse(remaining1)
 
       switch result2 {
-      case .success(let target2, let remaining2):
-        return .success(target2, remaining2)
-
       case .failure(let location2, let message2):
         return .failure(location2, message2)
-      }
 
-    case .failure(let location1, let message1):
-      return .failure(location1, message1)
+      case .success(let target2, let remaining2):
+        return .success(target2, remaining2)
+      }
     }
   }
 }
