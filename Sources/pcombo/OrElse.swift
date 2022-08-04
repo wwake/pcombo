@@ -8,7 +8,7 @@
 import Foundation
 
 public class OrElse<P1: Parser, P2: Parser> : Parser
-where P1.Target == P2.Target, P1.Input == P2.Input {
+where P1.Input == P2.Input, P1.Target == P2.Target {
 
   public typealias Target = P1.Target
 
@@ -35,7 +35,10 @@ where P1.Target == P2.Target, P1.Input == P2.Input {
     return bestFailure(result1, result2)
   }
 
-  public func bestFailure(_ failure1: ParseResult<P1.Input, Target>, _ failure2: ParseResult<P1.Input, Target>) -> ParseResult<P1.Input, Target> {
+  public func bestFailure(
+    _ failure1: ParseResult<P1.Input, Target>,
+    _ failure2: ParseResult<P1.Input, Target>)
+        -> ParseResult<P1.Input, Target> {
     guard case .failure(let location1, _) = failure1 else {
       return failure2
     }
