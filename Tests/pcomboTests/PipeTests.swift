@@ -26,5 +26,4 @@ final class PipeTests: XCTestCase {
 
     result.checkFailure(.failure(0, "the message"))
   }
-
 }
