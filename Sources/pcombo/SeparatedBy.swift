@@ -47,13 +47,18 @@ where P1.Input == P2.Input {
   }
 }
 
-infix operator <&&> : MultiplicationPrecedence
+precedencegroup ExponentiationPrecedence {
+  higherThan: MultiplicationPrecedence
+  associativity: left
+}
+
+infix operator <&&> : ExponentiationPrecedence
 
 public func <&&> <P1: Parser, P2: Parser>(parser1: P1, parser2: P2) -> SeparatedBy<P1, P2> {
   return SeparatedBy(parser1, parser2)
 }
 
-infix operator <&& : MultiplicationPrecedence
+infix operator <&& : ExponentiationPrecedence
 
 public func <&& <P1: Parser, P2: Parser>(parser1: P1, parser2: P2) -> SeparatedByKeepLeft<P1, P2> {
   return SeparatedByKeepLeft(parser1, parser2)

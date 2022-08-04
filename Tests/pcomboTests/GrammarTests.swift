@@ -65,7 +65,7 @@ final class GrammarTests: XCTestCase {
     let ifGoto = match("if") &> lineNumber
     |> { Statement.ifGoto($0)}
 
-    let ifStatements = match("if") &> (statement <&& match(":"))
+    let ifStatements = match("if") &> statement <&& match(":")
     |> { Statement.ifStatement(.block($0), .skip)}
 
     let statementParser = print <|> ifGoto <|> ifStatements
