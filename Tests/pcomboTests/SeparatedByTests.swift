@@ -1,9 +1,9 @@
 @testable import pcombo
 import XCTest
 
-final class CommaTests: XCTestCase {
+final class SeparatedByTests: XCTestCase {
 
-  public func testCommaMatchingOneItem() {
+  public func testSeparatedByMatchingOneItem() {
     let sat1 = satisfy {$0 == 1}
     let sat2 = satisfy {$0 == 2}
     let grammar = sat1 <&&> sat2
@@ -19,7 +19,7 @@ final class CommaTests: XCTestCase {
     XCTAssertEqual(remaining, [3], "remaining")
   }
 
-  public func testCommaMatchingMultipleItems() {
+  public func testSeparatedByMatchingMultipleItems() {
     let sat1 = satisfy {$0 == 1}
     let sat2 = satisfy {$0 == 2}
     let grammar = sat1 <&&> sat2
@@ -36,7 +36,7 @@ final class CommaTests: XCTestCase {
     XCTAssertEqual(remaining, [3], "remaining")
   }
 
-  public func testCommaFailsToMatchFirstItem() {
+  public func testSeparatedByFailsToMatchFirstItem() {
     let sat1 = satisfy {$0 == 1}
     let sat2 = satisfy {$0 == 2}
     let grammar = sat1 <&&> sat2
@@ -52,7 +52,7 @@ final class CommaTests: XCTestCase {
     XCTAssertEqual(message, "Did not find expected value")
   }
 
-  public func testCommaLeftMatchingOneItem() {
+  public func testSeparatedByKeepLeftMatchingOneItem() {
     let sat1 = satisfy {$0 == 1}
     let sat2 = satisfy {$0 == 2}
     let grammar = sat1 <&& sat2
@@ -62,7 +62,7 @@ final class CommaTests: XCTestCase {
     result.checkSuccess([1], [3])
   }
 
-  public func testCommaLeftMatchingMultipleItems() {
+  public func testSeparatedByKeepLeftMatchingMultipleItems() {
     let sat1 = satisfy {$0 == 1}
     let sat2 = satisfy {$0 == 2}
     let grammar = sat1 <&& sat2
@@ -72,7 +72,7 @@ final class CommaTests: XCTestCase {
     result.checkSuccess([1, 1], [3])
   }
 
-  public func testCommaLeftFailsToMatchFirstItem() {
+  public func testSeparatedByKeepLeftFailsToMatchFirstItem() {
     let sat1 = satisfy {$0 == 1}
     let sat2 = satisfy {$0 == 2}
     let grammar = sat1 <&& sat2

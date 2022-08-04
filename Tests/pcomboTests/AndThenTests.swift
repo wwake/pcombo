@@ -8,7 +8,7 @@ final class AndThenTests: XCTestCase {
   let sat4 = satisfy<Int> { $0 == 4 }
 
   func testAndThenArrayMatchesBothItems() throws {
-    let parser = AndThenArray<satisfy<Int>>(sat1, sat2)
+    let parser = sat1 <&> sat2
 
     let result = parser.parse([1,2,5])
 
@@ -16,7 +16,7 @@ final class AndThenTests: XCTestCase {
   }
 
   func testAndThenArrayFailsIfFirstItemFailsToMatch() throws {
-    let parser = AndThenArray<satisfy<Int>>(sat1, sat2)
+    let parser = sat1 <&> sat2
 
     let result = parser.parse([42,2,5])
 
@@ -24,19 +24,11 @@ final class AndThenTests: XCTestCase {
   }
 
   func testAndThenArrayFailsIfOnlyFirstItemMatches() throws {
-    let parser = AndThenArray<satisfy<Int>>(sat1, sat2)
+    let parser = sat1 <&> sat2
 
     let result = parser.parse([1,4,5])
 
     result.checkFailure(.failure(1, "Did not find expected value"))
-  }
-
-  func testAndThenArrayOperator() throws {
-    let parser = sat1 <&> sat2
-
-    let result = parser.parse([1,2,5])
-
-    result.checkSuccess([1, 2], [5])
   }
 
   func testAndThenTupleReturnsTupleForNonMatchingTypes() throws {

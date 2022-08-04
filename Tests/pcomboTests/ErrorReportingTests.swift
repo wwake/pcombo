@@ -14,24 +14,14 @@ final class ErrorReportingTests: XCTestCase {
     let sat1 = satisfy<Int> { $0 == 1 }
     let result = sat1.parse([2])
 
-    if case let .failure(location, message) = result {
-      XCTAssertEqual(location, 0)
-      XCTAssertEqual(message, "Did not find expected value")
-      return
-    }
-    XCTFail("didn't get expected failure; got \(result)")
+    result.checkFailure(.failure(0, "Did not find expected value"))
   }
 
   func testSatisfyForNoInputReturnsFailure() throws {
     let sat1 = satisfy<Int> { $0 == 1 }
     let result = sat1.parse([])
 
-    if case let .failure(location, message) = result {
-      XCTAssertEqual(location, 0)
-      XCTAssertEqual(message, "Did not find expected value")
-      return
-    }
-    XCTFail("didn't get expected failure; got \(result)")
+    result.checkFailure(.failure(0, "Did not find expected value"))
   }
 
   func testAlternativesReportMostSuccessfulError() {
@@ -41,12 +31,7 @@ final class ErrorReportingTests: XCTestCase {
     let grammar = sat1 <&> sat2 <|> sat3 <&> sat1
     let result = grammar.parse([1])
 
-    if case let .failure(location, message) = result {
-      XCTAssertEqual(location, 1)
-      XCTAssertEqual(message, "should be 2")
-      return
-    }
-    XCTFail("didn't get expected failure; got \(result)")
+    result.checkFailure(.failure(1, "should be 2"))
   }
 
   func testAlternativesReportSecondErrorIfLocationTied() {
@@ -56,11 +41,6 @@ final class ErrorReportingTests: XCTestCase {
     let grammar = sat1 <|> sat2
     let result = grammar.parse([3])
 
-    if case let .failure(location, message) = result {
-      XCTAssertEqual(location, 0)
-      XCTAssertEqual(message, "should be 2")
-      return
-    }
-    XCTFail("didn't get expected failure; got \(result)")
+    result.checkFailure(.failure(0, "should be 2"))
   }
 }
