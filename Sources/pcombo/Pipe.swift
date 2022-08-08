@@ -33,6 +33,6 @@ public class Pipe<P : Parser, Value> : Parser {
 
 infix operator |> : MultiplicationPrecedence
 
-func |> <P: Parser, V>(p: P, fn: @escaping (P.Target) -> V) -> Pipe<P, V> {
+public func |> <P: Parser, V>(p: P, fn: @escaping (P.Target) -> V) -> Pipe<P, V> {
   return Pipe(p, fn)
 }

@@ -39,6 +39,6 @@ public class Check<P: Parser> : Parser {
 
 infix operator <&| : MultiplicationPrecedence
 
-func <&| <P: Parser>(p: P, fn: @escaping (P.Target) -> (Int, String)?) -> Check<P> {
+public func <&| <P: Parser>(p: P, fn: @escaping (P.Target) -> (Int, String)?) -> Check<P> {
   return Check(p, fn)
 }
