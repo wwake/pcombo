@@ -32,7 +32,7 @@ final class GrammarTests: XCTestCase {
 
     let ifStatement = match("if") &> statement <&> <?>(match("else") &> statement)
 
-    let statements = printStatement <|> (ifStatement |> buildIfStatement)
+    let statements = printStatement <||> (ifStatement |> buildIfStatement)
 
     statement.bind(statements.parse)
 

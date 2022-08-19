@@ -6,7 +6,7 @@ final class OrElseTests: XCTestCase {
   let sat2 = satisfy<Int> { $0 == 2 }
 
   func testOrElseCanMatchFirstItem() throws {
-    let parser = sat1 <|> sat2
+    let parser = sat1 <||> sat2
 
     let result = parser.parse([1,4,5])
 
@@ -14,7 +14,7 @@ final class OrElseTests: XCTestCase {
   }
 
   func testOrElseCanMatchSecondItem() throws {
-    let parser = sat1 <|> sat2
+    let parser = sat1 <||> sat2
 
     let result = parser.parse([2,4,5])
 
@@ -22,7 +22,7 @@ final class OrElseTests: XCTestCase {
   }
 
   func testOrElseFailsToMatch() throws {
-    let parser = sat1 <|> sat2
+    let parser = sat1 <||> sat2
 
     let result = parser.parse([3,4,5])
 

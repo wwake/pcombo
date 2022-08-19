@@ -51,7 +51,12 @@ where P1.Input == P2.Input, P1.Target == P2.Target {
 }
 
 infix operator <|> : AdditionPrecedence
+infix operator <||> : AdditionPrecedence
 
 public func <|> <P1: Parser, P2: Parser>(p1: P1, p2: P2) -> OrElseWithBacktracking<P1, P2> {
+  return OrElseWithBacktracking(p1, p2)
+}
+
+public func <||> <P1: Parser, P2: Parser>(p1: P1, p2: P2) -> OrElseWithBacktracking<P1, P2> {
   return OrElseWithBacktracking(p1, p2)
 }

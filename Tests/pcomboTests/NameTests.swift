@@ -24,7 +24,7 @@ final class NameTests: XCTestCase {
     XCTFail("should be .success(1,[]) but was \(result)")
   }
 
-  func testNameIsUsedIfParserCompletelyFails() {
+  func testNameIsUsedIfBothParsersCompletelyFail() {
     let sat1 = satisfy { $0 == 1 }
     let sat2 = satisfy { $0 == 2 }
     let grammar = sat1 <&> sat2 <|> sat2 <&> sat2 <%> "should be 12 or 22"
