@@ -89,19 +89,19 @@ Example:
     result.checkSuccess([2,2,1], [9])
 ```
 
-`<&|` - **Check** -  `parser <&| function` - if the parser fails, return the failure. If it succeeds, run the check function. If that returns nil, there was no problem, so return the parse result. If not nil, it returns a location and message, used to return .failure. 
+`|&>` - **Check** -  `parser |&> function` - if the parser fails, return the failure. If it succeeds, run the check function and return its result. 
 
 ```
-  func sumShouldBeEven(_ values: [Int]) -> (Int, String)? {
+  func sumShouldBeEven(_ values: [Int], _ remaining: ArraySlice<Int>) -> ParseResult<Int, String> {
     let sum = values.reduce(0, +)
-    if sum.isMultiple(of: 2) { return nil }
-    return (values.count, "sum was odd")
+    if sum.isMultiple(of: 2) { return .success("Result: \(sum)", remaining) }
+    return .failure(values.count, "sum was odd")
   }
 
   func testReturnsParseResultWhenCheckSucceeds() {
     let one = satisfy { $0 == 1 }
-    let parser = <+>one <&| sumShouldBeEven
+    let parser = <+>one |&> sumShouldBeEven
     let result = parser.parse([1,1,1,1,2])
-    result.checkSuccess([1,1,1,1], [2])
+    result.checkSuccess("Result: 4", [2])
   }
-``` 
+```
