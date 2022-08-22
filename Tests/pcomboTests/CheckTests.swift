@@ -1,7 +1,7 @@
 @testable import pcombo
 import XCTest
 
-final class Check2Tests: XCTestCase {
+final class CheckTests: XCTestCase {
   func sumShouldBeEven(_ values: [Int], _ remaining: ArraySlice<Int>) -> ParseResult<Int, String> {
     let sum = values.reduce(0, +)
     if sum.isMultiple(of: 2) { return .success("Result: \(sum)", remaining) }
