@@ -29,6 +29,11 @@ public class Many<P : Parser>  : Parser {
       result = parser.parse(lastRemaining)
     }
 
+    if case .failure(let position, let message) = result,
+         position > lastRemaining.startIndex
+    {
+      return .failure(position, message)
+    }
     return .success(values, lastRemaining)
   }
 }
