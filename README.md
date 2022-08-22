@@ -105,3 +105,5 @@ Example:
     result.checkSuccess("Result: 4", [2])
   }
 ```
+
+`inject(value)` - **inject** -  `injectValue <&> parser` - returns the hardcoded value and the result of the next parser. This can help you make two alternatives produce the same type of result.
