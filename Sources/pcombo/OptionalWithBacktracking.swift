@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class Optional<P : Parser>  : Parser {
+public class OptionalWithBacktracking<P : Parser>  : Parser {
 
   public typealias Input = P.Input
 
@@ -33,7 +33,12 @@ public class Optional<P : Parser>  : Parser {
 }
 
 prefix operator <?>
+prefix operator <??>
 
-public prefix func <?> <P: Parser>(parser: P) -> Optional<P> {
-  return Optional(parser)
+public prefix func <?> <P: Parser>(parser: P) -> OptionalWithBacktracking<P> {
+  return OptionalWithBacktracking(parser)
+}
+
+public prefix func <??> <P: Parser>(parser: P) -> OptionalWithBacktracking<P> {
+  return OptionalWithBacktracking(parser)
 }

@@ -32,7 +32,9 @@ public protocol Parser {
 ## Combinators
 
 ### Alternatives
-`<|>` - **Alternative** - addition precedence - `p1 <|> p2` succeeds if either parser succeeds. On failure, returns the failure that got the farthest.
+`<|>` - **Alternative** - addition precedence - `p1 <|> p2` - if the first parser succeeds, it returns that result of. If it fails with no progress, it returns the result of the second parser. If the first parser made progress but failed, it returns the failure result. 
+
+`<||>` - **Backtracking Alternative** - addition precedence - `p1 <||> p2` succeeds if either parser succeeds. On failure, returns the failure that got the farthest.
 
 `<%>` - **Name** - addition precedence - `p1 <%> "message"` - uses the result of p1 if it succeeds or makes any progress, or a failure with the specified message if it makes no progress.
 
@@ -50,7 +52,9 @@ public protocol Parser {
 `&>` - Right child of sequence - both parsers must succeed, but only returns the result of the second one
 
 ### Optional
-`<?>` - **Optional - 0 or 1** - succeeds whether or not the parser does; returns the parser's value or nil
+`<?>` - **Optional - 0 or 1** - if the parser succeeds, it returns the success. If the parser fails with no progress, it returns nil. If the parser made progress but failed, it returns that failure.
+
+`<??>` - **Backtracking Optional - 0 or 1** - succeeds whether or not the parser does; returns the parser's value or nil
 
 ### Repetition
 `<*>` - **Many (0 or more)** - prefix operator - `<*>p` returns an array of 0 or more values. (It can't return failure.)
