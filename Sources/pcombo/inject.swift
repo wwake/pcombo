@@ -11,7 +11,7 @@ public class inject<Input, InjectedValue> : Parser {
 
   let value: InjectedValue
 
-  init(_ value: InjectedValue) {
+  public init(_ value: InjectedValue) {
     self.value = value
   }
 
@@ -19,4 +19,3 @@ public class inject<Input, InjectedValue> : Parser {
     return .success(value, input)
   }
 }
-
