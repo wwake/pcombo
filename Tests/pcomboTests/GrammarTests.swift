@@ -68,7 +68,7 @@ final class GrammarTests: XCTestCase {
     let ifStatements = match("if") &> statement <&& match(":")
     |> { Statement.ifStatement(.block($0), .skip)}
 
-    let statementParser = print <|> ifGoto <|> ifStatements
+    let statementParser = print <||> ifGoto <||> ifStatements
 
     statement.bind(statementParser.parse)
 
