@@ -15,7 +15,7 @@ public class Check<P: Parser, Target2> : Parser {
   let checker: (P.Target, ArraySlice<P.Input>)
   -> ParseResult<P.Input, Target2>
 
-  init(_ parser: P, _ checker: @escaping (P.Target, ArraySlice<P.Input>) -> ParseResult<P.Input, Target2>) {
+  public init(_ parser: P, _ checker: @escaping (P.Target, ArraySlice<P.Input>) -> ParseResult<P.Input, Target2>) {
     self.parser = parser
     self.checker = checker
   }
