@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class Check2<P: Parser, Target2> : Parser {
+public class Check<P: Parser, Target2> : Parser {
   public typealias Input = P.Input
   public typealias Target = Target2
 
@@ -35,6 +35,6 @@ public class Check2<P: Parser, Target2> : Parser {
 
 infix operator |&> : MultiplicationPrecedence
 
-public func |&> <P: Parser, Target2>(p: P, fn: @escaping (P.Target, ArraySlice<P.Input>) -> ParseResult<P.Input, Target2>) -> Check2<P, Target2> {
-  return Check2(p, fn)
+public func |&> <P: Parser, Target2>(p: P, fn: @escaping (P.Target, ArraySlice<P.Input>) -> ParseResult<P.Input, Target2>) -> Check<P, Target2> {
+  return Check(p, fn)
 }
