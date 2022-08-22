@@ -1,11 +1,11 @@
 @testable import pcombo
 import XCTest
 
-final class OptionalTests: XCTestCase {
+final class OptionalWithBacktrackingTests: XCTestCase {
   let sat1 = satisfy {$0 == 1}
 
   func testOptionalWithMatch() throws {
-    let grammar = <?>sat1
+    let grammar = <??>sat1
 
     let result = grammar.parse([1,2])
 
@@ -13,7 +13,7 @@ final class OptionalTests: XCTestCase {
   }
 
   func testOptionalThatFailsToMatch() throws {
-    let grammar = <?>sat1
+    let grammar = <??>sat1
 
     let result = grammar.parse([2])
 
