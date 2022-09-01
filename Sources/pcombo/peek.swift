@@ -11,7 +11,7 @@ public class peek<P : Parser>  : Parser {
 
   public typealias Input = P.Input
 
-  public typealias Target = Int
+  public typealias Target = P.Target
 
   let parser: P
 
@@ -24,8 +24,8 @@ public class peek<P : Parser>  : Parser {
     let result = parser.parse(input)
 
     switch result {
-    case .success:
-      return .success(0, input)
+    case .success(let target, _):
+      return .success(target, input)
     case .failure(let location, let message):
       return .failure(location, message)
     }

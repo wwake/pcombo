@@ -9,7 +9,7 @@ final class peekTests: XCTestCase {
 
     let result = parser.parse([1,2])
 
-    result.checkSuccess(0, [1,2])
+    result.checkSuccess(1, [1,2])
   }
 
   func testPeekReturnsFailureWhenItFailsToMatch() throws {

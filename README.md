@@ -32,7 +32,7 @@ public protocol Parser {
 ## Combinators
 
 ### Alternatives
-`<|>` - **Alternative** - addition precedence - `p1 <|> p2` - if the first parser succeeds, it returns that result of. If it fails with no progress, it returns the result of the second parser. If the first parser made progress but failed, it returns the failure result. 
+`<|>` - **Alternative** - addition precedence - `p1 <|> p2` - if the first parser succeeds, it returns that result. If it fails with no progress, it returns the result of the second parser. If the first parser made progress but failed, it returns the failure result. 
 
 `<||>` - **Backtracking Alternative** - addition precedence - `p1 <||> p2` succeeds if either parser succeeds. On failure, returns the failure that got the farthest.
 
@@ -66,29 +66,6 @@ public protocol Parser {
 `<&&` - `A <&& B = A <&> <*>(B &> A)` - matches as <&&> but ignores the B results and returns [A]
 
 ### Transformation
-`|>` - **Pipe** - multiplication precedence - `parser |> function` runs the parser. If it succeeds, it transforms the result via the function; if it fails, it returns failure. 
-
-
-### Specialized
-`peek(parser)` - **Peek** - runs the parser. If it fails, return failure. If it succeeds, return (0, input) ie untouched input. This lets you fail early rather than go down a long but incorrect path.
-
-`Bind()` - **Bind** - allows you to wrap a parsing function so that you can define recursive parsers, or use parsers with non-standard names.
-
-Example:
-
-```
-    let one = satisfy { $0 == 1 } |> { [ $0 ]}
-    let two = satisfy { $0 == 2 }
-
-    let expr = Bind<Int, [Int]>()
-    let parser = one <|> two <&> expr
-    expr.bind(parser.parse)
-
-    let result = expr.parse([2,2,1,9])
-
-    result.checkSuccess([2,2,1], [9])
-```
-
 `|&>` - **Check** -  `parser |&> function` - if the parser fails, return the failure. If it succeeds, run the check function and return its result. 
 
 ```
@@ -106,4 +83,27 @@ Example:
   }
 ```
 
+`|>` - **Pipe** - multiplication precedence - `parser |> function` runs the parser. If it succeeds, it transforms the result via the function; if it fails, it returns failure. 
+
+
+### Specialized
+`Bind()` - **Bind** - allows you to wrap a parsing function so that you can define recursive parsers, or use parsers with non-standard names.
+
+Example:
+
+```
+    let one = satisfy { $0 == 1 } |> { [ $0 ]}
+    let two = satisfy { $0 == 2 }
+
+    let expr = Bind<Int, [Int]>()
+    let parser = one <|> two <&> expr
+    expr.bind(parser.parse)
+
+    let result = expr.parse([2,2,1,9])
+
+    result.checkSuccess([2,2,1], [9])
+```
+
 `inject(value)` - **inject** -  `injectValue <&> parser` - returns the hardcoded value and the result of the next parser. This can help you make two alternatives produce the same type of result.
+
+`peek(parser)` - **Peek** - runs the parser. If it fails, return failure. If it succeeds, return that value but with untouched input. This lets you fail early rather than go down a long but incorrect path.
